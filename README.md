@@ -22,23 +22,27 @@ A comprehensive productivity management application built to help you track your
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v14 or higher)
+
+- Node.js (v24 or higher)
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/N-Jadav/productivity_dashboard.git
 cd productivity_dashboard
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Start the development server and backend
+
 ```bash
 # Terminal 1 - Start the Vite dev server
 npm run dev

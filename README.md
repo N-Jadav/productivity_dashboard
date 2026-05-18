@@ -1,27 +1,77 @@
-# React + TypeScript + Vite
+# Productivity Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive productivity management application built to help you track your goals, habits, and progress over time. Visualize your productivity journey with intuitive charts, weekly/monthly breakdowns, and detailed progress tracking.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Goal Management**: Create, track, and manage your personal and professional goals
+- **Habit Tracking**: Build and monitor daily habits with visual progress indicators
+- **Weekly View**: See your weekly habits at a glance with progress rings
+- **Monthly Analytics**: Track habits across entire months for comprehensive insights
+- **Progress Reports**: Beautiful charts and visualizations of your productivity trends
+- **Dashboard Overview**: Get a quick snapshot of your goals and habits in one place
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Frontend**: React + TypeScript
+- **Build Tool**: Vite
+- **Styling**: CSS
+- **Backend**: Node.js Express (local server)
+- **Database**: File-based storage
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+```bash
+git clone https://github.com/N-Jadav/productivity_dashboard.git
+cd productivity_dashboard
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Start the development server and backend
+```bash
+# Terminal 1 - Start the Vite dev server
+npm run dev
+
+# Terminal 2 - Start the backend server
+npm run server
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+## Available Scripts
+
+- `npm run dev` - Start the development server with HMR
+- `npm run build` - Build the project for production
+- `npm run preview` - Preview the production build
+- `npm run server` - Start the backend server
+
+## Project Structure
+
+```
+src/
+├── components/       # Reusable UI components
+├── pages/           # Application pages (Dashboard, Goals, Habits, etc.)
+├── context/         # React context for state management
+├── utils/           # Utility functions
+└── types.ts         # TypeScript type definitions
+
+server/
+├── db.cjs           # Database operations
+├── index.cjs        # Server entry point
+└── routes/          # API routes
+```
+
+## License
+
+This project is open source and available under the MIT License.

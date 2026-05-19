@@ -44,21 +44,29 @@ npm install
 3. Start the development server and backend
 
 ```bash
+npm run dev:all
+```
+
+Alternatively, run the frontend and backend in separate terminals:
+
+```bash
 # Terminal 1 - Start the Vite dev server
 npm run dev
 
 # Terminal 2 - Start the backend server
-npm run server
+npm run dev:server
 ```
 
 4. Open your browser and navigate to `http://localhost:5173`
 
 ## Available Scripts
 
-- `npm run dev` - Start the development server with HMR
+- `npm run dev` - Start the Vite development server with HMR
+- `npm run dev:server` - Start the backend server
+- `npm run dev:all` - Run both frontend and backend together
+- `npm run start` - Alias for `npm run dev:all`
 - `npm run build` - Build the project for production
 - `npm run preview` - Preview the production build
-- `npm run server` - Start the backend server
 
 ## Project Structure
 

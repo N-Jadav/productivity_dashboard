@@ -1,13 +1,14 @@
-const Database = require('better-sqlite3');
-const path = require('path');
-const fs = require('fs');
+const Database = require("better-sqlite3");
+const path = require("path");
+const fs = require("fs");
 
-const DB_PATH = path.join(__dirname, 'focusflow.db');
+const DB_PATH = path.join(__dirname, "focusflow.db");
+const isNewDb = !fs.existsSync(DB_PATH);
 const db = new Database(DB_PATH);
 
 // Enable WAL mode for better performance
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
 
 // Create tables
 db.exec(`
@@ -64,7 +65,9 @@ try {
   // Column already exists
 }
 try {
-  db.exec("ALTER TABLE habit_completions ADD COLUMN value REAL NOT NULL DEFAULT 1");
+  db.exec(
+    "ALTER TABLE habit_completions ADD COLUMN value REAL NOT NULL DEFAULT 1",
+  );
 } catch (e) {
   // Column already exists
 }
@@ -74,27 +77,26 @@ function getWeekStart() {
   const day = d.getDay();
   const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust for Monday start
   d.setDate(diff);
-  return d.toISOString().split('T')[0];
+  return d.toISOString().split("T")[0];
 }
 
-// Seed default data if empty
-const habitCount = db.prepare('SELECT COUNT(*) as n FROM habits').get();
-if (habitCount.n === 0) {
+// Seed default data only when the database file is first created
+if (isNewDb) {
   const now = new Date().toISOString();
   const insertHabit = db.prepare(
-    'INSERT INTO habits (id, name, emoji, color, created_at) VALUES (?, ?, ?, ?, ?)'
+    "INSERT INTO habits (id, name, emoji, color, created_at) VALUES (?, ?, ?, ?, ?)",
   );
-  insertHabit.run('seed-1', 'Morning Workout', '🏋️', '#10b981', now);
-  insertHabit.run('seed-2', 'Read 30 mins', '📚', '#6366f1', now);
-  insertHabit.run('seed-3', 'Meditate', '🧘', '#f59e0b', now);
-  insertHabit.run('seed-4', 'Drink Water (2L)', '💧', '#06b6d4', now);
-  insertHabit.run('seed-5', 'No Social Media', '🚫', '#ec4899', now);
+  insertHabit.run("seed-1", "Morning Workout", "🏋️", "#10b981", now);
+  insertHabit.run("seed-2", "Read 30 mins", "📚", "#6366f1", now);
+  insertHabit.run("seed-3", "Meditate", "🧘", "#f59e0b", now);
+  insertHabit.run("seed-4", "Drink Water (2L)", "💧", "#06b6d4", now);
+  insertHabit.run("seed-5", "No Social Media", "🚫", "#ec4899", now);
 
   const insertWeeklyHabit = db.prepare(
-    'INSERT INTO weekly_habits (habit_id, week_start) VALUES (?, ?)'
+    "INSERT INTO weekly_habits (habit_id, week_start) VALUES (?, ?)",
   );
   const currentWeek = getWeekStart();
-  ['seed-1', 'seed-2', 'seed-3', 'seed-4', 'seed-5'].forEach(id => {
+  ["seed-1", "seed-2", "seed-3", "seed-4", "seed-5"].forEach((id) => {
     insertWeeklyHabit.run(id, currentWeek);
   });
 
@@ -103,10 +105,32 @@ if (habitCount.n === 0) {
   const dl = endOfMonth.toISOString();
 
   const insertGoal = db.prepare(
-    'INSERT INTO goals (id, title, description, target, current, unit, deadline, color, emoji, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    "INSERT INTO goals (id, title, description, target, current, unit, deadline, color, emoji, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
-  insertGoal.run('gseeed-1', 'Run 50km', 'Monthly running target', 50, 18, 'km', dl, '#10b981', '🏃', now);
-  insertGoal.run('gseed-2', 'Read 4 Books', 'Reading goal for this month', 4, 1, 'books', dl, '#6366f1', '📖', now);
+  insertGoal.run(
+    "gseeed-1",
+    "Run 50km",
+    "Monthly running target",
+    50,
+    18,
+    "km",
+    dl,
+    "#10b981",
+    "🏃",
+    now,
+  );
+  insertGoal.run(
+    "gseed-2",
+    "Read 4 Books",
+    "Reading goal for this month",
+    4,
+    1,
+    "books",
+    dl,
+    "#6366f1",
+    "📖",
+    now,
+  );
 }
 
 // Backfill existing habits to current week if they aren't in weekly_habits

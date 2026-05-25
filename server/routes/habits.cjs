@@ -25,6 +25,7 @@ function buildHabit(row) {
     type: row.type || "boolean",
     targetValue: row.target_value || 0,
     unit: row.unit || "",
+    comparison: row.comparison || "lte",
     completions,
     activeWeeks,
   };
@@ -64,11 +65,12 @@ router.post("/", (req, res) => {
     type,
     targetValue,
     unit,
+    comparison,
   } = req.body;
   if (!id || !name)
     return res.status(400).json({ error: "id and name required" });
   db.prepare(
-    "INSERT INTO habits (id, name, emoji, color, created_at, type, target_value, unit) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    "INSERT INTO habits (id, name, emoji, color, created_at, type, target_value, unit, comparison) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
   ).run(
     id,
     name,
@@ -78,6 +80,7 @@ router.post("/", (req, res) => {
     type || "boolean",
     targetValue || 0,
     unit || "",
+    comparison || "lte",
   );
 
   if (weekStart) {

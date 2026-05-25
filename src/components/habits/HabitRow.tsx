@@ -46,7 +46,7 @@ const HabitRow: React.FC<HabitRowProps> = ({
               className="habit-target-label"
               style={{ fontSize: "10px", color: "var(--text-muted)" }}
             >
-              Goal: {habit.targetValue} {habit.unit}
+              {habit.comparison === 'lte' && '≤'} {habit.comparison === 'gte' && '≥'} {habit.comparison === 'eq' && '='} {habit.targetValue} {habit.unit}
             </span>
           )}
         </div>
@@ -55,7 +55,6 @@ const HabitRow: React.FC<HabitRowProps> = ({
             className="habit-delete-btn"
             onClick={() => deleteHabit(habit.id, formatDate(days[0]))}
             aria-label={`Delete ${habit.name}`}
-            disabled={!currentWeekActive}
           >
             <Trash2 size={13} />
           </button>
@@ -81,11 +80,11 @@ const HabitRow: React.FC<HabitRowProps> = ({
             >
               {habit.type === "number" ? (
                 // Numeric habits: editable for current week days up to today, greyed placeholder for future
-                isFuture || !currentWeekActive ? (
+                isFuture ? (
                   <div
                     className="habit-numeric-display future"
                     style={{ opacity: 0.25 }}
-                    title="Future date or locked week"
+                    title="Future date"
                   >
                     –
                   </div>
@@ -111,7 +110,6 @@ const HabitRow: React.FC<HabitRowProps> = ({
                     }
                     placeholder="0"
                     title={`${habit.name}: enter actual ${habit.unit || "value"} (target: ${habit.targetValue} ${habit.unit || ""})`}
-                    disabled={!currentWeekActive}
                     onChange={(e) => {
                       const v =
                         e.target.value === "" ? 0 : Number(e.target.value);
@@ -130,7 +128,7 @@ const HabitRow: React.FC<HabitRowProps> = ({
                   }
                   onClick={() => toggleHabitDay(habit.id, dateStr)}
                   aria-label={`${habit.name} on ${dateStr}: ${completed ? "done" : "not done"}`}
-                  disabled={isFuture || !currentWeekActive}
+                  disabled={isFuture}
                 >
                   {completed && <Check size={11} strokeWidth={3} />}
                 </button>

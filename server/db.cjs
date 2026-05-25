@@ -71,6 +71,11 @@ try {
 } catch (e) {
   // Column already exists
 }
+try {
+  db.exec("ALTER TABLE habits ADD COLUMN comparison TEXT DEFAULT 'lte'");
+} catch (e) {
+  // Column already exists
+}
 
 function getWeekStart() {
   const d = new Date();
@@ -88,15 +93,12 @@ if (isNewDb) {
   );
   insertHabit.run("seed-1", "Morning Workout", "🏋️", "#10b981", now);
   insertHabit.run("seed-2", "Read 30 mins", "📚", "#6366f1", now);
-  insertHabit.run("seed-3", "Meditate", "🧘", "#f59e0b", now);
-  insertHabit.run("seed-4", "Drink Water (2L)", "💧", "#06b6d4", now);
-  insertHabit.run("seed-5", "No Social Media", "🚫", "#ec4899", now);
 
   const insertWeeklyHabit = db.prepare(
     "INSERT INTO weekly_habits (habit_id, week_start) VALUES (?, ?)",
   );
   const currentWeek = getWeekStart();
-  ["seed-1", "seed-2", "seed-3", "seed-4", "seed-5"].forEach((id) => {
+  ["seed-1", "seed-2"].forEach((id) => {
     insertWeeklyHabit.run(id, currentWeek);
   });
 
@@ -108,7 +110,7 @@ if (isNewDb) {
     "INSERT INTO goals (id, title, description, target, current, unit, deadline, color, emoji, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
   );
   insertGoal.run(
-    "gseeed-1",
+    "gseed-1",
     "Run 50km",
     "Monthly running target",
     50,
@@ -117,18 +119,6 @@ if (isNewDb) {
     dl,
     "#10b981",
     "🏃",
-    now,
-  );
-  insertGoal.run(
-    "gseed-2",
-    "Read 4 Books",
-    "Reading goal for this month",
-    4,
-    1,
-    "books",
-    dl,
-    "#6366f1",
-    "📖",
     now,
   );
 }

@@ -6,9 +6,10 @@ export interface Habit {
   createdAt: string; // ISO date string
   activeWeeks: string[]; // Week start dates
   completions: Record<string, boolean | number>; // key = "YYYY-MM-DD"
-  type: 'boolean' | 'number';
+  type: "boolean" | "number";
   targetValue?: number;
   unit?: string;
+  comparison?: "lte" | "gte" | "eq"; // For numeric habits: lte (<=), gte (>=), eq (==)
 }
 
 export interface Goal {
@@ -24,7 +25,7 @@ export interface Goal {
   createdAt: string;
 }
 
-export type TabId = 'dashboard' | 'weekly' | 'monthly' | 'goals' | 'reports';
+export type TabId = "dashboard" | "weekly" | "monthly" | "goals" | "reports";
 
 export interface AppState {
   habits: Habit[];
